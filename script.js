@@ -28,3 +28,10 @@ const displayController = (function () {
     return {addFieldEntry, resetField};
 })();
 
+const gameBoard = (function () {
+
+})();
+
+const player = function() {
+
+};
