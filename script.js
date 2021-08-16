@@ -1,6 +1,6 @@
-const gameBoard = (function () {
+const displayController = (function () {
 
-    function populateBoard(symbol, fieldid) {
+    function addFieldEntry(symbol, fieldid) {
         let field = document.querySelector(`#${fieldid}`);
         let content = document.createElement('p');
 
@@ -15,11 +15,16 @@ const gameBoard = (function () {
         field.appendChild(content);
     };
 
-    function resetBoard(symbol, fieldid) {
-
+    function removeFieldEntry(fieldid) {
+        let field = document.querySelector(`#${fieldid} + p`);
+        field.remove()
     };
 
-    const allFields = document.querySelectorAll('.playfield');
-    allFields.forEach(field => field.addEventListener('click', (e) => console.log(e.target)));
+    function resetField() {
+        let allFields = document.querySelectorAll('.playboard p');
+        allFields.forEach(field => field.remove());
+    };
 
+    return {addFieldEntry, resetField};
 })();
+
