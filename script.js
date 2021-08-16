@@ -1,7 +1,7 @@
 const displayController = (function () {
 
-    function addFieldEntry(symbol, fieldid) {
-        let field = document.querySelector(`#${fieldid}`);
+    function addFieldEntry(fieldid, symbol) {
+        let field = document.querySelector(`#field${fieldid}`);
         let content = document.createElement('p');
 
         if (symbol === 'cross') {
@@ -15,23 +15,43 @@ const displayController = (function () {
         field.appendChild(content);
     };
 
-    function removeFieldEntry(fieldid) {
-        let field = document.querySelector(`#${fieldid} + p`);
-        field.remove()
-    };
-
     function resetField() {
         let allFields = document.querySelectorAll('.playboard p');
         allFields.forEach(field => field.remove());
     };
 
-    return {addFieldEntry, resetField};
+    function displayStateObject(stateObject) {
+        resetField();
+        Object.entries(stateObject).forEach(([field, value]) => addFieldEntry(field, value));
+    };
+
+    return {displayStateObject};
 })();
+
 
 const gameBoard = (function () {
+    let currentState;
 
+    function resetState() {
+        currentState = {
+            field0 : none, field1 : none, field2 : none,
+            field3 : none, field4 : none, field5 : none,
+            field6 : none, field7 : none, field8 : none,
+        };
+    };
+    function getFieldEmpty(fieldid) {
+        if (!currentState[fieldid]) {
+            return true;
+        } else {
+            return false;
+        };
+    };
+
+    function setFieldSymbol(fieldid, symbol) {
+        currentState[fieldid] = symbol;
+    };
 })();
 
-const player = function() {
-
+const player = function(symbol) {
+    let score = 0;
 };
