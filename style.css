@@ -1,0 +1,29 @@
+.playboard {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    width: 15rem;
+    height: 15rem;
+    margin: 0 auto;
+}
+
+.playfield {
+    border: solid 1px black;
+    cursor: pointer;
+
+    height: 5rem;
+    width: 5rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.circle {
+    font-size: 2.5em;
+}
+
+.cross {
+    font-size: 5em;
+    transform: rotate(45deg);
+}
