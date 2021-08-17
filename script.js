@@ -1,6 +1,5 @@
 //replace fields with data attributes
 //change object to array
-
 const displayController = (function () {
 
     function addFieldEntry(symbol, fieldid) {
@@ -23,21 +22,26 @@ const displayController = (function () {
         allFields.forEach(field => field.remove());
     };
 
-    function displayStateObject(stateArray) {
+    function displayStateArray(stateArray) {
         resetField();
-        stateArray.forEach((state, index) => addFieldEntry(index, state));
+        stateArray.forEach((state, index) => addFieldEntry(state, index));
     };
 
-    return {displayStateObject};
+    return {resetField, displayStateArray};
 })();
 
 
 const gameBoard = (function () {
     let currentState;
 
+    function getState() {
+        return currentState;
+    }
+
     function resetState() {
-        currentState = ['', '', '', '', '', '', '', '', '',]
+        currentState = [null, null, null, null, null, null, null, null, null,]
     };
+
     function getFieldEmpty(fieldid) {
         if (!currentState[fieldid]) {
             return true;
@@ -46,11 +50,42 @@ const gameBoard = (function () {
         };
     };
 
-    function setFieldSymbol(fieldid, symbol) {
+    function setFieldSymbol(symbol, fieldid) {
         currentState[fieldid] = symbol;
     };
+
+    return {getState, resetState, setFieldSymbol, getFieldEmpty};
+})();
+
+
+const game = (function () {
+
+    //creates the state array upon execution
+    gameBoard.resetState();
+
+    //resets the array and display
+    function reset() {
+        displayController.resetField()
+        resetState();
+    };
+
+    //checks if field is empty, changes the array, and displays the array
+    function setMove(symbol, fieldid) {
+        if (!gameBoard.getFieldEmpty) return;
+        gameBoard.setFieldSymbol(symbol, parseInt(fieldid));
+        displayController.displayStateArray(gameBoard.getState());
+    };
+
+    const fields = document.querySelectorAll('.playfield');
+    fields.forEach(field => field.addEventListener('click', (e) => setMove(currentSymbol, e.target.getAttribute('data-index'))));
+
 })();
 
 const player = function(symbol) {
     let score = 0;
+    
+
+    function addPoint() {
+        score += 1;
+    };
 };
