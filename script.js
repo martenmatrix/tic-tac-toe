@@ -1,3 +1,6 @@
+//replace fields with data attributes
+//change object to array
+
 const displayController = (function () {
 
     function addFieldEntry(fieldid, symbol) {
@@ -9,7 +12,7 @@ const displayController = (function () {
             content.textContent = '+';
         } else if (symbol === 'circle') {
             content.classList.add('cross');
-            content.textContent = '◯';
+            content.textContent = 'X';
         };
 
         field.appendChild(content);

@@ -1,29 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Righteous&display=swap');
+
+body {
+    font-family: 'Righteous', cursive;
+}
+
 .playboard {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 5rem);
+    grid-template-rows: repeat(3, 5rem);
+    grid-gap: 0.7rem;
 
-    width: 15rem;
-    height: 15rem;
-    margin: 0 auto;
+    justify-content: center;
 }
 
 .playfield {
     border: solid 1px black;
     cursor: pointer;
 
-    height: 5rem;
-    width: 5rem;
-
     display: flex;
     justify-content: center;
     align-items: center;
-}
 
-.circle {
-    font-size: 2.5em;
+    font-weight: bold;
+    font-size: 4rem;
 }
 
 .cross {
-    font-size: 5em;
+    font-size: 6rem;
     transform: rotate(45deg);
 }
