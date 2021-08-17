@@ -3,7 +3,7 @@
 
 const displayController = (function () {
 
-    function addFieldEntry(fieldid, symbol) {
+    function addFieldEntry(symbol, fieldid) {
         let field = document.querySelector(`[data-index="${fieldid}"]`);
         let content = document.createElement('p');
 
@@ -23,9 +23,9 @@ const displayController = (function () {
         allFields.forEach(field => field.remove());
     };
 
-    function displayStateObject(stateObject) {
+    function displayStateObject(stateArray) {
         resetField();
-        Object.entries(stateObject).forEach(([field, value]) => addFieldEntry(field, value));
+        stateArray.forEach((state, index) => addFieldEntry(index, state));
     };
 
     return {displayStateObject};
@@ -36,11 +36,7 @@ const gameBoard = (function () {
     let currentState;
 
     function resetState() {
-        currentState = {
-            field0 : none, field1 : none, field2 : none,
-            field3 : none, field4 : none, field5 : none,
-            field6 : none, field7 : none, field8 : none,
-        };
+        currentState = ['', '', '', '', '', '', '', '', '',]
     };
     function getFieldEmpty(fieldid) {
         if (!currentState[fieldid]) {
