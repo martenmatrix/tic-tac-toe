@@ -4,14 +4,14 @@
 const displayController = (function () {
 
     function addFieldEntry(fieldid, symbol) {
-        let field = document.querySelector(`#field${fieldid}`);
+        let field = document.querySelector(`[data-index="${fieldid}"]`);
         let content = document.createElement('p');
 
         if (symbol === 'cross') {
             content.classList.add('cross');
             content.textContent = '+';
         } else if (symbol === 'circle') {
-            content.classList.add('cross');
+            content.classList.add('circle');
             content.textContent = 'X';
         };
 
