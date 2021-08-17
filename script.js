@@ -12,7 +12,7 @@ const displayController = (function () {
             content.textContent = '+';
         } else if (symbol === 'circle') {
             content.classList.add('circle');
-            content.textContent = 'X';
+            content.textContent = 'O';
         };
 
         field.appendChild(content);
