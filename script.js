@@ -59,6 +59,17 @@ const gameBoard = (function () {
 
 
 const game = (function () {
+    
+    //first move has circle
+    let currentMove = 'circle';
+
+    function changeMove() {
+        if (currentMove === 'circle') {
+            currentMove = 'cross';
+        } else {
+            currentMove = 'circle';
+        };
+    };
 
     //creates the state array upon execution
     gameBoard.resetState();
@@ -74,16 +85,17 @@ const game = (function () {
         if (!gameBoard.getFieldEmpty) return;
         gameBoard.setFieldSymbol(symbol, parseInt(fieldid));
         displayController.displayStateArray(gameBoard.getState());
+
+        changeMove();
     };
 
     const fields = document.querySelectorAll('.playfield');
-    fields.forEach(field => field.addEventListener('click', (e) => setMove(currentSymbol, e.target.getAttribute('data-index'))));
+    fields.forEach(field => field.addEventListener('click', (e) => setMove(currentMove, e.target.getAttribute('data-index'))));
 
 })();
 
 const player = function(symbol) {
     let score = 0;
-    
 
     function addPoint() {
         score += 1;
