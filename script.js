@@ -151,16 +151,6 @@ const game = (function () {
         return currentMove;
     };
 
-    function setRandomMove() {
-        let fieldid = gameBoard.getRandomFieldID();
-         
-        while (!(gameBoard.getFieldEmpty(fieldid))) {
-            fieldid = gameBoard.getRandomFieldID();
-        };
-
-        setMove(currentMove, fieldid);
-    };
-
     //creates the state array upon execution
     gameBoard.resetState();
 
@@ -171,39 +161,44 @@ const game = (function () {
         gameBoard.resetState();
     };
 
-    //checks if field is empty, changes the array, and displays the array
+
+    function addRound() {
+        currentRound += 1;
+    };
+
+    //changes the array, and displays the array
     function setMove(symbol, fieldid) {
         fieldid = parseInt(fieldid);
-        currentRound += 1;
-
-        let currentState = gameBoard.getState();
-
-        if (!gameBoard.getFieldEmpty(fieldid)) return;
         gameBoard.setFieldSymbol(symbol, fieldid);
-        displayController.displayStateArray(currentState);
-        
+        displayController.displayStateArray(gameBoard.getState());
+    };
+
+    function isWinner(fieldid) {
         //checks if current player won
         if (gameBoard.checkWinner(fieldid)) {
-            displayController.displayWinner(currentState[fieldid] === 'circle' ? 'O' : 'X');
+            displayController.displayWinner((gameBoard.getState())[fieldid] === 'circle' ? 'O' : 'X');
             reset();
+            return true;
         } else if (currentRound === 9) {
             displayController.displayWinner('DRAW');
             reset();
+            return true;
         };
 
-        changeMove();
-
-        if (againstRobot) {
-            currentRound += 1;
-            setRandomMove();
-            changeMove();
-            return;
-        };
-    };
+        return false;
+    }
 
     const fields = document.querySelectorAll('.playfield');
     fields.forEach(field => field.addEventListener('click', (e) => {
-        setMove(currentMove, e.target.getAttribute('data-index'));
+        let fieldidString = e.target.getAttribute('data-index');
+        let fieldid = parseInt(fieldidString);
+
+        if (!gameBoard.getFieldEmpty(fieldid)) return;
+
+        addRound();
+        setMove(currentMove, fieldid);
+        isWinner(fieldid);
+        changeMove();
     }));
 
     const restartButton = document.querySelector('.menu-end button');
