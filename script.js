@@ -145,6 +145,8 @@ const game = (function () {
     let againstRobot = false;
     let currentRound = 0;
 
+    let buttonLocked = false;
+
     function changeMove() {
         if (currentMove === 'circle') {
             currentMove = 'cross';
@@ -172,6 +174,7 @@ const game = (function () {
     function reset() {
         currentMove = 'circle';
         currentRound = 0;
+        buttonLocked = false;
         displayController.resetField()
         gameBoard.resetState();
     };
@@ -207,6 +210,7 @@ const game = (function () {
         let fieldid = parseInt(fieldidString);
 
         if (!gameBoard.isFieldEmpty(fieldid)) return;
+        buttonLocked = true;
         addRound();
         setMove(currentMove, fieldid);
         let isOneWinner = isWinner(fieldid);
@@ -229,6 +233,7 @@ const game = (function () {
 
     const toggleRobotButton = document.querySelector('.menu-start button');
     toggleRobotButton.onclick = () => {
+        if(buttonLocked) return;
         displayController.markButtonSelected(toggleRobotButton);
         toggleRobot();
     };
