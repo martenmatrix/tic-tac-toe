@@ -157,6 +157,7 @@ const game = (function () {
     let againstRobot = false;
     let currentRound = 0;
 
+    let difficulty = 'easy';
     let buttonLocked = false;
 
     function changeMove() {
@@ -249,5 +250,9 @@ const game = (function () {
         toggleRobot();
     };
 
+    const difficultySelector = document.querySelector('.menu-start select');
+    difficultySelector.addEventListener('change', () => {
+        difficulty = difficultySelector.value;
+    })
     return {getCurrentMove, reset};
 })();
