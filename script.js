@@ -55,7 +55,10 @@ const displayController = (function () {
 
         showMessage();
         if (!announcementDiv.onclick) {
-            announcementDiv.onclick = () => removeMessage();
+            announcementDiv.onclick = () => {
+                game.reset();
+                removeMessage();
+            };
         };
     };
 
@@ -224,8 +227,6 @@ const game = (function () {
             isOneWinner = isWinner(randomFieldID);
             changeMove();
         };
-
-        if (isOneWinner) reset();
     }));
 
     const restartButton = document.querySelector('.menu-end button');
@@ -238,5 +239,5 @@ const game = (function () {
         toggleRobot();
     };
 
-    return {getCurrentMove};
+    return {getCurrentMove, reset};
 })();
