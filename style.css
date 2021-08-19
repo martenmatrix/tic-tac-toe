@@ -83,14 +83,21 @@ body {
     transition: filter 1s;
 }
 
-.fadein {
-    transform: scale(1);
-    transition: transform 0.5s;
-    transition-delay: 0.5s;
-}
-
 .menu-start {
     margin-bottom: 3rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+}
+
+.menu-start select {
+    display: none;
+    position: absolute;
+    top: 2%;
+    left: 5%;
 }
 
 .menu-end {
@@ -99,4 +106,10 @@ body {
 
 .selected {
     border: solid 0.3rem rgba(107, 241, 120, 1);
+}
+
+.fadein {
+    transform: scale(1);
+    transition: transform 0.5s;
+    transition-delay: 0.5s;
 }

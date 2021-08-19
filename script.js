@@ -36,6 +36,15 @@ const displayController = (function () {
     function markButtonSelected(object) {
         object.classList.toggle('selected');
     };
+
+    function toggleDifficultySelector() {
+        const difficultySelector = document.querySelector('.menu-start select');
+        if(difficultySelector.style.display) {
+            difficultySelector.style.display = '';
+        } else {
+            difficultySelector.style.display = 'block';
+        };
+    };
     
     function displayWinner(winner) {
         const announcementDiv = document.querySelector('.winner-announcement');
@@ -62,7 +71,7 @@ const displayController = (function () {
         };
     };
 
-    return {resetField, displayStateArray, displayWinner, markButtonSelected};
+    return {resetField, displayStateArray, displayWinner, markButtonSelected, toggleDifficultySelector};
 })();
 
 
@@ -235,6 +244,7 @@ const game = (function () {
     const toggleRobotButton = document.querySelector('.menu-start button');
     toggleRobotButton.onclick = () => {
         if(buttonLocked) return;
+        displayController.toggleDifficultySelector();
         displayController.markButtonSelected(toggleRobotButton);
         toggleRobot();
     };
