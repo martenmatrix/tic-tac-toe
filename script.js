@@ -1,3 +1,5 @@
+'use strict';
+
 const Player = function(symbol) {
     let score = 0;
 
@@ -147,6 +149,41 @@ const gameBoard = (function () {
     return {getState, resetState, setFieldSymbol, isFieldEmpty, checkWinner, getRandomFieldID, getEmptyFieldID};
 })();
 
+const minmax = (function () {
+
+    function _getPossibleMovesIDs() {
+        let currentState = gameBoard.getState();
+        let freeIDs = [];
+
+        currentState.forEach((item, index) => {
+            if (item === null) freeIDs.push(index);
+        });
+
+        return freeIDs;
+    };
+
+    function _getScoreMove(fieldid) {
+        return 1;
+    };
+
+    function getBestMove() {
+        let bestScore = -Infinity;
+        let bestMoveID;
+
+        let possibleMoves = _getPossibleMovesIDs();
+        possibleMoves.forEach((fieldid) => {
+            let currentScore = _getScoreMove(fieldid);
+
+            if (currentScore > bestScore) {
+                bestScore = currentScore;
+                bestMoveID = fieldid;
+            };
+        });
+    };
+    
+    return {getBestMove};
+})();
+
 const game = (function () {
     
     const player = Player('circle');
@@ -231,10 +268,18 @@ const game = (function () {
 
         if (againstRobot && !isOneWinner) {
             addRound();
-            let randomFieldID = gameBoard.getEmptyFieldID();
-            if (randomFieldID === null) return;
-            setMove(currentMove, randomFieldID);
-            isOneWinner = isWinner(randomFieldID);
+
+            let fieldid;
+            //if difficulty set to unbeatable, do recursive algorithm, else choose random field
+            if (difficulty === 'unbeat') {
+                fieldid = minmax.getBestMove();
+            } else {
+                fieldid = gameBoard.getEmptyFieldID();
+            };
+
+            if (fieldid === null) return;
+            setMove(currentMove, fieldid);
+            isOneWinner = isWinner(fieldid);
             changeMove();
         };
     }));
