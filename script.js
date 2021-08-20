@@ -151,8 +151,10 @@ const gameBoard = (function () {
 
 const minmax = (function () {
 
-    function _getPossibleMovesIDs() {
-        let currentState = gameBoard.getState();
+    const aiMark = 'cross';
+    const humanMark = 'circle';
+
+    function _getPossibleMovesIDs(currentState) {
         let freeIDs = [];
 
         currentState.forEach((item, index) => {
@@ -161,27 +163,105 @@ const minmax = (function () {
 
         return freeIDs;
     };
+    
+    function _checkWinner(currentState, currentMark) {
+        const winnerCombinations = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6],
+          ];
+        
 
-    function _getScoreMove(fieldid) {
-        return 1;
+        const isSameState = (possibleCombination) => possibleCombination.every(index => currentState[index] === currentMark);
+
+        //check for every possible combinations, iterate trough array in array if all fields are equal to the current player return winner
+        const currentPlayerWinner = winnerCombinations.some(possibleCombination => isSameState(possibleCombination));
+
+        if (currentPlayerWinner) {
+            return true;
+        } else {
+            return false;
+        };
     };
 
-    function getBestMove() {
+    //currentState = ["circle", "circle", null,
+    //               "cross", "cross", "circle",
+    //                "cross", null, null]
+
+    function findBestMove(currentState) {
+        
         let bestScore = -Infinity;
-        let bestMoveID;
+        let bestMove = null;
+        let freeIndexes = _getPossibleMovesIDs(currentState);
 
-        let possibleMoves = _getPossibleMovesIDs();
-        possibleMoves.forEach((fieldid) => {
-            let currentScore = _getScoreMove(fieldid);
 
+        freeIndexes.forEach(possibleMove => {
+            currentState[possibleMove] = 'cross';
+            let currentScore = minimax(currentState, 0, false)
+            currentState[possibleMove] = null;
             if (currentScore > bestScore) {
                 bestScore = currentScore;
-                bestMoveID = fieldid;
+                bestMove = possibleMove;
             };
         });
+        return bestMove;
     };
-    
-    return {getBestMove};
+
+
+    function minimax(currentState, depth, isMaximizingPlayer) {
+        let score;
+
+        //check if terminal state
+        //ai won
+        if (_checkWinner(currentState, aiMark)) return score = 1;
+        //human won
+        if (_checkWinner(currentState, humanMark)) return score = -1;
+        //tie
+        let freeIndexes = _getPossibleMovesIDs(currentState);
+        if(freeIndexes.length === 0) return score = 0;
+
+        if (isMaximizingPlayer) {
+            let bestVal = -Infinity;
+
+            let possibleMoves = _getPossibleMovesIDs(currentState);
+            possibleMoves.forEach(possibleMove => {
+
+                currentState[possibleMove] = aiMark;
+                let value = minimax(currentState, depth+1, false);
+                currentState[possibleMove] = null;
+
+                bestVal = Math.max(bestVal, value);
+
+            });
+            return bestVal;
+
+            
+
+        } else {
+            let bestVal = Infinity;
+
+            let possibleMoves = _getPossibleMovesIDs(currentState);
+            possibleMoves.forEach(possibleMove => {
+
+                currentState[possibleMove] = humanMark;
+                let value = minimax(currentState, depth+1, true);
+                currentState[possibleMove] = null;
+
+
+                bestVal = Math.min(bestVal, value);
+
+            });
+            return bestVal;
+        };
+    };
+
+    return {findBestMove}
+
 })();
 
 const game = (function () {
@@ -194,7 +274,6 @@ const game = (function () {
     let againstRobot = false;
     let currentRound = 0;
 
-    let difficulty = 'easy';
     let buttonLocked = false;
 
     function changeMove() {
@@ -216,6 +295,10 @@ const game = (function () {
     function getCurrentMove() {
         return currentMove;
     };
+
+    function getCurrentRound() {
+        return currentRound;
+    }
 
     //creates the state array upon execution
     gameBoard.resetState();
@@ -269,10 +352,14 @@ const game = (function () {
         if (againstRobot && !isOneWinner) {
             addRound();
 
+            const difficultySelector = document.querySelector('.menu-start select');
+            let difficulty = difficultySelector.value;
+
             let fieldid;
             //if difficulty set to unbeatable, do recursive algorithm, else choose random field
             if (difficulty === 'unbeat') {
-                fieldid = minmax.getBestMove();
+                let bestMove = minmax.findBestMove(gameBoard.getState());
+                fieldid = bestMove;
             } else {
                 fieldid = gameBoard.getEmptyFieldID();
             };
@@ -295,9 +382,5 @@ const game = (function () {
         toggleRobot();
     };
 
-    const difficultySelector = document.querySelector('.menu-start select');
-    difficultySelector.addEventListener('change', () => {
-        difficulty = difficultySelector.value;
-    })
-    return {getCurrentMove, reset};
+    return {getCurrentMove, getCurrentRound, reset};
 })();
