@@ -38,7 +38,7 @@ The application is hosted at the following address:
 2. Click a tile to place a mark.
 5. Enjoy your game. :tada:
 If something does not work as expected, please [create an issue](https://github.com/martenmatrix/tic-tac-toe/issues/new).
-	> :bulb: You can use the reset button to restart the game.
+	> :bulb: If you want to restart the game, press the button below the board.
 
 ## :sparkles: Features
 - play tic-tac-toe against a computer, which places random moves or uses an AI
