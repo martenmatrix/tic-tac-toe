@@ -7,7 +7,7 @@ The algorithm used by the AI is a backtracking algorithm called Minimax and work
 The `minimax()` function either returns `0`, `1` or, `-1` and accepts three arguments: the state of the current board, the depth and if it's the turn of the maximizing player (the computer).
 
 The `minimax()` function is recursive and works like this:
-1. Create empty `score` variable.
+1. Create a `score` variable with nothing assigned to it.
 2. Check if AI won, if yes set score to `1` and return `1`.
 3. Check if human won, if yes set score to `-1` and return `-1`.
 4. If no fields are empty, return `0` and set score to `0`.
